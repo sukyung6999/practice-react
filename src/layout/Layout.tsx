@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-const Layout = () => {
+function Layout() {
     return <>
         <header>리액트 하나씩 공부하기</header>
         <main>
