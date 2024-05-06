@@ -1,61 +1,118 @@
-import { SubmitHandler, useForm } from "react-hook-form"
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 interface FormValue {
-    id: string
-    password: string
-    password_confirm: string
-    name: string
-    email: string
-    question: string
-    answer: string
+  userId: string;
+  password: string;
+  password_confirm: string;
+  name: string;
+  email: string;
+  question: string;
+  answer: string;
 }
 
 function JoinForm() {
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: {errors}
-    } = useForm<FormValue>();
+  const idList: string[] = ["sukyung", "susu"];
 
-    const handleJoin : SubmitHandler<FormValue> = (data) => {
-        console.log(data);
+  const [isUserIdChecked, setIsUserIdChecked] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    getValues,
+  } = useForm<FormValue>();
+
+  const handleJoin: SubmitHandler<FormValue> = (data) => {
+    if (!isUserIdChecked) {
+      alert("아이디 중복확인을 해주세요.");
+      return;
+    }
+  };
+
+  const handleDuplicateCheck = () => {
+    const id = getValues("userId");
+
+    if (!id) {
+      alert("아이디를 입력해주세요");
+      return;
     }
 
-    return <form onSubmit={handleSubmit(handleJoin)}>
-        <div>
-            <label htmlFor="">아이디</label>
-            <input type="text" {...register("id")} />
-            <button type="button">중복확인</button>
-        </div>
-        <div>
-            <label htmlFor="">비밀번호</label>
-            <input type="password" {...register("password")} />
-        </div>
-        <div>
-            <label htmlFor="">비밀번호 확인</label>
-            <input type="password" {...register("password_confirm")} />
-        </div>
-        <div>
-            <label htmlFor="">이름</label>
-            <input type="text" {...register("name")} />
-        </div>
-        <div>
-            <label htmlFor="">이메일</label>
-            <input type="text" {...register("email")} />
-        </div>
-        <div>
-            <label htmlFor="">아이디 찾기 질문</label>
-            <select name="" id="">
-                <option value="" {...register("question")}></option>
-            </select>
-        </div>
-        <div>
-            <label htmlFor="">아이디 찾기 답변</label>
-            <input type="text" {...register("answer")} />
-        </div>
-        <button>회원가입</button>
+    if (!idList.includes(id)) {
+      alert("사용 가능한 아이디입니다.");
+      setIsUserIdChecked(true);
+      return;
+    } else {
+      alert("사용할 수 없는 아이디입니다.");
+      return;
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(handleJoin)}>
+      <div>
+        <label htmlFor="userId">아이디</label>
+        <input
+          id="userId"
+          type="text"
+          placeholder="아이디(2~13자 영문, 숫자 입력)"
+          {...register("userId",{
+            required: true,
+            minLength: 2,
+            maxLength: 13,
+            pattern: /[A-z0-9]/
+          })}
+        />
+        {errors.userId && <p>아이디의 글자수를 확인해주세요. (2 ~ 20자리)</p>}
+        <button type="button" onClick={handleDuplicateCheck}>
+          중복확인
+        </button>
+      </div>
+      <div>
+        <label htmlFor="">비밀번호</label>
+        <input type="password"
+          placeholder="비밀번호(8~20자 영문, 숫자, 특수문자)"
+          {...register("password",{
+            required: true,
+            minLength: 9,
+            maxLength: 20,
+            pattern: /[A-z0-9]/
+          })} />
+      </div>
+      <div>
+        <label htmlFor="">비밀번호 확인</label>
+        <input type="password" {...register("password_confirm")} />
+      </div>
+      <div>
+        <label htmlFor="">이름</label>
+        <input type="text" {...register("name")} />
+      </div>
+      <div>
+        <label htmlFor="">이메일</label>
+        <input type="text" {...register("email")} />
+      </div>
+      <div>
+        <label htmlFor="">아이디 찾기 질문</label>
+        <select name="" id="">
+          <option value="" {...register("question")}>
+            질문을 선택해주세요.
+          </option>
+          <option value="" {...register("question")}>
+            내가 가장 좋아하는 영화는?
+          </option>
+          <option value="" {...register("question")}>
+            내가 가장 좋아하는 음식은?
+          </option>
+        </select>
+      </div>
+      <div>
+        <label htmlFor="">아이디 찾기 답변</label>
+        <input type="text" {...register("answer")} />
+      </div>
+      <button>회원가입</button>
     </form>
+  );
 }
 
 export default JoinForm;
