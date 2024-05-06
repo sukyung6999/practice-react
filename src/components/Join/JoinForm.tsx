@@ -61,24 +61,26 @@ function JoinForm() {
             required: true,
             minLength: 2,
             maxLength: 13,
-            pattern: /[A-z0-9]/
+            pattern: /[a-zA-Z0-9]{2,13}/
           })}
         />
-        {errors.userId && <p>아이디의 글자수를 확인해주세요. (2 ~ 20자리)</p>}
+        {errors.userId && <p>아이디를 확인해주세요. (2~13자 영문, 숫자 입력)</p>}
         <button type="button" onClick={handleDuplicateCheck}>
           중복확인
         </button>
       </div>
       <div>
-        <label htmlFor="">비밀번호</label>
+        <label htmlFor="password">비밀번호</label>
         <input type="password"
+        id="password"
           placeholder="비밀번호(8~20자 영문, 숫자, 특수문자)"
           {...register("password",{
             required: true,
             minLength: 9,
             maxLength: 20,
-            pattern: /[A-z0-9]/
+            pattern: /[a-zA-Z0-9\W_]{9,20}/
           })} />
+          {errors.password && <p>비밀번호를 확인해주세요. (8~20자 영문, 숫자, 특수문자)</p>}
       </div>
       <div>
         <label htmlFor="">비밀번호 확인</label>
