@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 interface FormValue {
   userId: string;
-  password: string;
-  password_confirm: string;
+  userPassword: string;
+  userPassword_confirm: string;
   name: string;
   email: string;
   question: string;
@@ -15,6 +16,11 @@ function JoinForm() {
   const idList: string[] = ["sukyung", "susu"];
 
   const [isUserIdChecked, setIsUserIdChecked] = useState(false);
+  
+  const joinSchema = z.object({
+    userId: z.string().min(1, {message: '이름을 입력해주세요.'}),
+    userPassword: z.number({invalid_type_error: '비밀번호를 입력해주세요.'})
+  });
 
   const {
     register,
@@ -22,7 +28,9 @@ function JoinForm() {
     watch,
     formState: { errors },
     getValues,
-  } = useForm<FormValue>();
+  } = useForm<FormValue>({
+    resolver: zodResolver(joinSchema)
+  });
 
   const handleJoin: SubmitHandler<FormValue> = (data) => {
     if (!isUserIdChecked) {
@@ -34,10 +42,10 @@ function JoinForm() {
   const handleDuplicateCheck = () => {
     const id = getValues("userId");
 
-    if (!id) {
-      alert("아이디를 입력해주세요");
-      return;
-    }
+    // if (!id) {
+    //   alert("아이디를 입력해주세요");
+    //   return;
+    // }
 
     if (!idList.includes(id)) {
       alert("사용 가능한 아이디입니다.");
@@ -57,34 +65,47 @@ function JoinForm() {
           id="userId"
           type="text"
           placeholder="아이디(2~13자 영문, 숫자 입력)"
-          {...register("userId",{
+          {...register("userId", {
             required: true,
             minLength: 2,
             maxLength: 13,
-            pattern: /[a-zA-Z0-9]{2,13}/
+            pattern: /[a-zA-Z0-9]{2,13}/,
           })}
         />
-        {errors.userId && <p>아이디를 확인해주세요. (2~13자 영문, 숫자 입력)</p>}
+        {errors.userId && (
+          <p>{errors.userId.message}</p>
+        )}
         <button type="button" onClick={handleDuplicateCheck}>
           중복확인
         </button>
       </div>
       <div>
-        <label htmlFor="password">비밀번호</label>
-        <input type="password"
-        id="password"
+        <label htmlFor="userPassword">비밀번호</label>
+        <input
+          type="password"
+          id="userPassword"
           placeholder="비밀번호(8~20자 영문, 숫자, 특수문자)"
-          {...register("password",{
+          {...register("userPassword", {
             required: true,
             minLength: 9,
             maxLength: 20,
-            pattern: /[a-zA-Z0-9\W_]{9,20}/
-          })} />
-          {errors.password && <p>비밀번호를 확인해주세요. (8~20자 영문, 숫자, 특수문자)</p>}
+            pattern: /[a-zA-Z0-9\W_]{9,20}/,
+          })}
+        />
+        {errors.userPassword && (
+          <p>비밀번호를 확인해주세요. (8~20자 영문, 숫자, 특수문자)</p>
+        )}
       </div>
       <div>
-        <label htmlFor="">비밀번호 확인</label>
-        <input type="password" {...register("password_confirm")} />
+        <label htmlFor="userPassword_confirm">비밀번호 확인</label>
+        <input
+          type="password"
+          id="userPassword_confirm"
+          {...register("userPassword_confirm", {
+            required: true,
+            
+          })}
+        />
       </div>
       <div>
         <label htmlFor="">이름</label>
@@ -96,14 +117,14 @@ function JoinForm() {
       </div>
       <div>
         <label htmlFor="">아이디 찾기 질문</label>
-        <select name="" id="">
-          <option value="" {...register("question")}>
+        <select name="" id="" {...register("question")}>
+          <option value="">
             질문을 선택해주세요.
           </option>
-          <option value="" {...register("question")}>
+          <option value="">
             내가 가장 좋아하는 영화는?
           </option>
-          <option value="" {...register("question")}>
+          <option value="">
             내가 가장 좋아하는 음식은?
           </option>
         </select>
