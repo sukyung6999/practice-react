@@ -1,5 +1,17 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 
+enum DomainList {
+  custom = '직접입력',
+  gmail = 'gmail.com',
+  naver = 'naver.com',
+  daum = 'daum.net',
+  hanmail = 'hanmail.net',
+  nate = 'nate.com',
+  hotmail = 'hotmail.com',
+  yahoo = 'yahoo.co.kr',
+  kakao = 'kakao.com'
+}
+
 enum QuestionList {
   option1 = "내가 가장 좋아하는 영화는?",
   option2 = "내가 가장 좋아하는 장소는?",
@@ -11,6 +23,7 @@ interface FormValue {
   passwordConfirm: string;
   name: string;
   email: string;
+  domain: DomainList;
   question: QuestionList;
   answer: string;
 }
@@ -37,7 +50,7 @@ function JoinForm() {
             pattern: /[A-Za-z0-9]/
           })}
         />
-        {errors.id && <span>아이디를 확인해주세요. (4~12자 영문 또는 숫자만 가능)</span>}
+        {errors.id && <span>아이디를 확인해주세요. (4~12자 영문, 숫자 입력)</span>}
       </div>
       <div>
         <label htmlFor="password">비밀번호</label>
@@ -47,11 +60,9 @@ function JoinForm() {
           {...register("password", {
             required: true,
             pattern: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*-+])[a-zA-Z\d~!@#$%^&*-+]{8,20}$/
-            // 내 특수문자 : !@#$%^&*-=+
-            // 정답 : !@#$%^&*()
           })}
         />
-        {errors.password && <span>비밀번호를 확인해주세요. (8글자 이상, 영문, 숫자, 특수문자)</span>}
+        {errors.password && <span>비밀번호를 확인해주세요. (8~20자 영문, 숫자, 특수문자 조합)</span>}
       </div>
       <div>
         <label htmlFor="passwordConfirm">비밀번호 확인</label>
@@ -83,8 +94,21 @@ function JoinForm() {
           type="text"
           {...register("email", {
             required: true,
+            pattern: /[A-Za-z0-9]/
           })}
         />
+        @
+        <select name="" id="">
+          <option value={DomainList.custom}>{DomainList.custom}</option>
+          <option value={DomainList.gmail}>{DomainList.gmail}</option>
+          <option value={DomainList.naver}>{DomainList.naver}</option>
+          <option value={DomainList.daum}>{DomainList.daum}</option>
+          <option value={DomainList.hanmail}>{DomainList.hanmail}</option>
+          <option value={DomainList.nate}>{DomainList.nate}</option>
+          <option value={DomainList.hotmail}>{DomainList.hotmail}</option>
+          <option value={DomainList.yahoo}>{DomainList.yahoo}</option>
+          <option value={DomainList.kakao}>{DomainList.kakao}</option>
+        </select>
         {errors.email && <span>이메일을 확인해주세요.</span>}
       </div>
       <div>
