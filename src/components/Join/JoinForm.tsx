@@ -1,17 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 
-enum DomainList {
-  custom = '직접입력',
-  gmail = 'gmail.com',
-  naver = 'naver.com',
-  daum = 'daum.net',
-  hanmail = 'hanmail.net',
-  nate = 'nate.com',
-  hotmail = 'hotmail.com',
-  yahoo = 'yahoo.co.kr',
-  kakao = 'kakao.com'
-}
-
 enum QuestionList {
   option1 = "내가 가장 좋아하는 영화는?",
   option2 = "내가 가장 좋아하는 장소는?",
@@ -23,7 +11,7 @@ interface FormValue {
   passwordConfirm: string;
   name: string;
   email: string;
-  domain: DomainList;
+  domain: string;
   question: QuestionList;
   answer: string;
 }
@@ -42,27 +30,35 @@ function JoinForm() {
         <label htmlFor="id">아이디</label>
         <input
           id="id"
+          placeholder="아이디를 입력해주세요. (4~12자 영문, 숫자 입력)"
           type="text"
           {...register("id", {
-            required: true,
+            required: "아이디를 입력해주세요.",
             minLength: 4,
             maxLength: 12,
-            pattern: /[A-Za-z0-9]/
+            pattern: {
+              value: /[A-Za-z0-9]/,
+              message: "4~12자 영문, 숫자 입력"
+            }
           })}
         />
-        {errors.id && <span>아이디를 확인해주세요. (4~12자 영문, 숫자 입력)</span>}
+        {errors.id && <span>{errors.id.message}</span>}
       </div>
       <div>
         <label htmlFor="password">비밀번호</label>
         <input
           id="password"
+          placeholder="비밀번호를 입력해주세요. (8~20자 영문, 숫자, 특수문자 조합)"
           type="password"
           {...register("password", {
-            required: true,
-            pattern: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*-+])[a-zA-Z\d~!@#$%^&*-+]{8,20}$/
+            required: "비밀번호를 입력해주세요.",
+            pattern: {
+              value:  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*-+])[a-zA-Z\d~!@#$%^&*-+]{8,20}$/,
+              message: "8~20자 영문, 숫자, 특수문자 조합"
+            }
           })}
         />
-        {errors.password && <span>비밀번호를 확인해주세요. (8~20자 영문, 숫자, 특수문자 조합)</span>}
+        {errors.password && <span>{errors.password.message}</span>}
       </div>
       <div>
         <label htmlFor="passwordConfirm">비밀번호 확인</label>
@@ -70,11 +66,14 @@ function JoinForm() {
           id="passwordConfirm"
           type="password"
           {...register("passwordConfirm", {
-            required: true,
-            pattern: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*-+])[a-zA-Z\d~!@#$%^&*-+]{8,20}$/
+            required: "비밀번호를 한번 더 입력해주세요.",
+            pattern: {
+              value: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*-+])[a-zA-Z\d~!@#$%^&*-+]{8,20}$/,
+              message: "비밀번호를 한번 더 확인해주세요."
+            }
           })}
         />
-        {errors.passwordConfirm && <span>비밀번호를 한번 더 확인해주세요.</span>}
+        {errors.passwordConfirm && <span>{errors.passwordConfirm.message}</span>}
       </div>
       <div>
         <label htmlFor="name">이름</label>
@@ -82,10 +81,10 @@ function JoinForm() {
           id="name"
           type="text"
           {...register("name", {
-            required: true,
+            required: "이름을 입력해주세요.",
           })}
         />
-        {errors.name && <span>이름을 확인해주세요.</span>}
+        {errors.name && <span>{errors.name.message}</span>}
       </div>
       <div>
         <label htmlFor="email">이메일</label>
@@ -93,37 +92,28 @@ function JoinForm() {
           id="email"
           type="text"
           {...register("email", {
-            required: true,
-            pattern: /[A-Za-z0-9]/
+            required: "이메일을 확인해주세요.",
+            pattern: {
+              value: /^[A-Za-z0-9+-_.]+@[a-z]+\.[a-z]+$/,
+              message: "이메일을 확인해주세요."
+            }
           })}
         />
-        @
-        <select name="" id="">
-          <option value={DomainList.custom}>{DomainList.custom}</option>
-          <option value={DomainList.gmail}>{DomainList.gmail}</option>
-          <option value={DomainList.naver}>{DomainList.naver}</option>
-          <option value={DomainList.daum}>{DomainList.daum}</option>
-          <option value={DomainList.hanmail}>{DomainList.hanmail}</option>
-          <option value={DomainList.nate}>{DomainList.nate}</option>
-          <option value={DomainList.hotmail}>{DomainList.hotmail}</option>
-          <option value={DomainList.yahoo}>{DomainList.yahoo}</option>
-          <option value={DomainList.kakao}>{DomainList.kakao}</option>
-        </select>
-        {errors.email && <span>이메일을 확인해주세요.</span>}
+        {errors.email && <span>{errors.email.message}</span>}
       </div>
       <div>
         <label htmlFor="question">아이디 찾기 질문</label>
         <select
           id="questionList"
           {...register("question", {
-            required: true,
+            required: "아이디 찾기 질문을 확인해주세요.",
           })}
         >
           <option value={QuestionList.option1}>{QuestionList.option1}</option>
           <option value={QuestionList.option2}>{QuestionList.option2}</option>
           <option value={QuestionList.option3}>{QuestionList.option3}</option>
         </select>
-        {errors.question && <span>아이디 찾기 질문을 확인해주세요.</span>}
+        {errors.question && <span>{errors.question.message}</span>}
       </div>
       <div>
         <label htmlFor="answer">아이디 찾기 답변</label>
@@ -131,10 +121,10 @@ function JoinForm() {
           id="answer"
           type="text"
           {...register("answer", {
-            required: true,
+            required: "아이디 찾기 답변을 확인해주세요.",
           })}
         />
-        {errors.answer && <span>아이디 찾기 답변을 확인해주세요.</span>}
+        {errors.answer && <span>{errors.answer.message}</span>}
       </div>
       <button>회원가입</button>
     </form>
