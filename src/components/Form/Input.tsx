@@ -1,26 +1,10 @@
-import { InputProps } from "../Join/JoinForm";
+import React, {InputHTMLAttributes, DetailedHTMLProps} from "react";
 
-function Input({id, label, placeholder, type, minLength, maxLength, patternValue, patternMsg, required, register, errors}: InputProps) {
-  return (
-    <div>
-      <label htmlFor={id}>{label}</label>
-      <input
-        id={id}
-        placeholder={placeholder}
-        type={type}
-        {...register(id, {
-          required,
-          minLength,
-          maxLength,
-          pattern: {
-            value: patternValue,
-            message: patternMsg,
-          },
-        })}
-        aria-invalid={errors[id] ? "true" : "false"}
-      />
-      {errors.id && <span>{errors.id.message}</span>}
-    </div>
-  );
-}
+type Props = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+
+const Input = React.forwardRef<HTMLInputElement, Props>((props, ref) => {
+  return <div>
+    <input ref={ref} {...props}/>
+  </div>;
+});
 export default Input;
