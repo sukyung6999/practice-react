@@ -14,5 +14,5 @@ enum QuestionList  {
   option2 = "내가 가장 좋아하는 장소는?",
   option3 = "내가 가장 좋아하는 색깔은?",
 }
-
-export type {FormValue, QuestionList};
+export {QuestionList}
+export type {FormValue};

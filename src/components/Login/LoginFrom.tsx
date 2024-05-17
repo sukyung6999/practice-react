@@ -5,7 +5,8 @@ function LoginForm() {
   const {register, formState: {errors}} = useForm();
   return <form action="">
     <Input
-      id="id"
+      id="loginId"
+      label="아이디"
       placeholder="아이디를 필수입력입니다. (4~12자 영문, 숫자 입력)"
       type="text"
       {...register("id", {
