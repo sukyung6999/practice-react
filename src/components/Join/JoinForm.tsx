@@ -1,21 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { QuestionList } from "../../types/join";
 import type { FormValue } from "../../types/join";
 import Input from "../Form/Input";
 import Select from "../Form/select";
-
-// type InputProps = {
-//   id: Path<FormValue>
-//   label: string
-//   placeholder: string
-//   type: string
-//   minLength: number
-//   maxLength: number
-//   patternValue: RegExp
-//   patternMsg: string
-//   required: string
-//   register: UseFormRegister<FormValue>
-// }
 
 function JoinForm() {
   const {
@@ -89,7 +75,7 @@ function JoinForm() {
         aria-invalid={errors.name ? "true" : "false"}
       />
       {errors.name && <span>{errors.name.message}</span>}
-      
+
       <Input
         id="email"
         label="이메일"
