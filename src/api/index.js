@@ -1,0 +1,1 @@
+export const API_PREFIX = import.meta.VITE_API_URL + '/api';
