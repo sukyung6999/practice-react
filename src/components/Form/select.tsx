@@ -1,5 +1,5 @@
 import React, {SelectHTMLAttributes, DetailedHTMLProps} from "react";
-import { QuestionList } from "../../types/join";
+import { QuestionList } from "../../types/input";
 
 type SelectValue = {
   label: string

@@ -1,12 +1,17 @@
-interface FormValue {
-  id: string;
-  password: string;
-  passwordConfirm: string;
+interface JoinInputs {
+  joinId: string;
+  joinPassword: string;
+  joinPasswordConfirm: string;
   name: string;
   email: string;
   domain: string;
   question: QuestionList;
   answer: string;
+}
+
+interface LoginInputs {
+  loginId: string;
+  loginPassword: string;
 }
 
 enum QuestionList  {
@@ -15,4 +20,4 @@ enum QuestionList  {
   option3 = "내가 가장 좋아하는 색깔은?",
 }
 export {QuestionList}
-export type {FormValue};
+export type {JoinInputs, LoginInputs};

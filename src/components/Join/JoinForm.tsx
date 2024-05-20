@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import type { FormValue } from "../../types/join";
+import type { JoinInputs } from "../../types/input";
 import Input from "../Form/Input";
 import Select from "../Form/select";
 
@@ -7,20 +7,21 @@ function JoinForm() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<FormValue>();
+  } = useForm<JoinInputs>({
+    mode: 'onBlur'
+  });
 
-  const onSubmit: SubmitHandler<FormValue> = () => {};
+  const onSubmit: SubmitHandler<JoinInputs> = () => {};
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Input
-        id="id"
+        id="joinId"
         label="아이디"
-        placeholder="아이디를 필수입력입니다. (4~12자 영문, 숫자 입력)"
+        placeholder="아이디는 필수입력입니다. (4~12자 영문, 숫자 입력)"
         type="text"
-        {...register("id", {
-          required: "아이디를 필수입력입니다.",
+        {...register("joinId", {
+          required: "아이디는 필수입력입니다.",
           minLength: 4,
           maxLength: 12,
           pattern: {
@@ -28,42 +29,43 @@ function JoinForm() {
             message: "4~12자 영문, 숫자 입력",
           },
         })}
-        aria-invalid={errors.id ? "true" : "false"}
+        aria-invalid={errors.joinId ? "true" : "false"}
       />
-      {errors.id && <span>{errors.id.message}</span>}
+      {errors.joinId && <span>{errors.joinId.message}</span>}
+      <button type="button">중복확인</button>
 
       <Input
-        id="password"
+        id="joinPassword"
         label="비밀번호"
-        placeholder="비밀번호를 필수입력입니다. (8~20자 영문, 숫자, 특수문자 조합)"
+        placeholder="비밀번호는 필수입력입니다. (8~20자 영문, 숫자, 특수문자 조합)"
         type="password"
-        {...register("password", {
-          required: "비밀번호를 필수입력입니다.",
+        {...register("joinPassword", {
+          required: "비밀번호는 필수입력입니다.",
           pattern: {
             value:
               /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*-+])[a-zA-Z\d~!@#$%^&*-+]{8,20}$/,
             message: "8~20자 영문, 숫자, 특수문자 조합",
           },
         })}
-        aria-invalid={errors.password ? "true" : "false"}
+        aria-invalid={errors.joinPassword ? "true" : "false"}
       />
-      {errors.password && <span>{errors.password.message}</span>}
+      {errors.joinPassword && <span>{errors.joinPassword.message}</span>}
 
       <Input
-        id="passwordConfirm"
+        id="joinPasswordConfirm"
         label="비밀번호 확인"
         type="password"
-        {...register("passwordConfirm", {
-          required: "비밀번호를 한번 더 입력해주세요.",
+        {...register("joinPasswordConfirm", {
+          required: "비밀번호는 한번 더 입력해주세요.",
           pattern: {
             value:
               /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*-+])[a-zA-Z\d~!@#$%^&*-+]{8,20}$/,
-            message: "비밀번호를 한번 더 확인해주세요.",
+            message: "비밀번호는 한번 더 확인해주세요.",
           },
         })}
-        aria-invalid={errors.passwordConfirm ? "true" : "false"}
+        aria-invalid={errors.joinPasswordConfirm ? "true" : "false"}
       />
-      {errors.passwordConfirm && <span>{errors.passwordConfirm.message}</span>}
+      {errors.joinPasswordConfirm && <span>{errors.joinPasswordConfirm.message}</span>}
 
       <Input
         id="name"
