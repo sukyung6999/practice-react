@@ -1,7 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import type { JoinInputs } from "../../types/input";
 import Input from "../Form/Input";
-import Select from "../Form/select";
 
 function JoinForm() {
   const {
@@ -93,23 +92,6 @@ function JoinForm() {
       />
       {errors.email && <span>{errors.email.message}</span>}
 
-      <Select
-        id="questionList"
-        label="아이디 찾기 질문"
-        {...register("question")}
-      />
-      {errors.question && <span>{errors.question.message}</span>}
-
-      <Input
-        id="answer"
-        label="아이디 찾기 답변"
-        type="text"
-        {...register("answer", {
-          required: "아이디 찾기 답변은 필수입력입니다.",
-        })}
-        aria-invalid={errors.answer ? "true" : "false"}
-      />
-      {errors.answer && <span>{errors.answer.message}</span>}
       <button>회원가입</button>
     </form>
   );
