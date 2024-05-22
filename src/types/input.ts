@@ -4,6 +4,7 @@ interface JoinInputs {
   joinPasswordConfirm: string;
   name: string;
   email: string;
+  profile: FileList
 }
 
 interface LoginInputs {

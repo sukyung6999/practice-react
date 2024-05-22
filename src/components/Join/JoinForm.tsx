@@ -1,19 +1,51 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import type { JoinInputs } from "../../types/input";
 import Input from "../Form/Input";
+import { useRef, useState } from "react";
 
 function JoinForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<JoinInputs>({
-    mode: 'onBlur'
-  });
+  } = useForm<JoinInputs>();
 
   const onSubmit: SubmitHandler<JoinInputs> = () => {};
+
+  const [previewImg, setPrevieImg] = useState('');
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
+  const {ref: profileRegisterRef, ...rest} = register('profile');
+
+  const handleUploadButton = () => {
+    hiddenInputRef.current.click();
+  }
+
+  const handleUploadProfile = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const file = event.target.files[0];
+
+    const urlImage = URL.createObjectURL(file);
+
+    setPrevieImg(urlImage);
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <Input
+        id="profile"
+        label="프로필"
+        type="file"
+        style={{display: 'none'}}
+        onChange={handleUploadProfile}
+        {...rest}
+        ref={(e:  HTMLInputElement) => {
+          profileRegisterRef(e);
+          hiddenInputRef.current = e;
+        }}
+        />
+        <img src={previewImg} alt="프로필 이미지" />
+        <button type="button" onClick={handleUploadButton}>업로드</button>
+      </div>
       <Input
         id="joinId"
         label="아이디"
