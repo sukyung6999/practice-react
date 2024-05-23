@@ -12,20 +12,25 @@ function JoinForm() {
 
   const onSubmit: SubmitHandler<JoinInputs> = () => {};
 
-  const [previewImg, setPrevieImg] = useState('');
-  const hiddenInputRef = useRef<HTMLInputElement>(null);
+  const [previewImg, setPreviewImg] = useState      ('');
+  const [fileImg, setFileImg] = useState<File | null>(null);
+  const hiddenInputRef = useRef<HTMLInputElement | null>(null);
   const {ref: profileRegisterRef, ...rest} = register('profile');
 
-  const handleUploadButton = () => {
-    hiddenInputRef.current.click();
+  const handleUploadButton = () => {    
+    hiddenInputRef.current?.click();
   }
 
-  const handleUploadProfile = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const file = event.target.files[0];
-
-    const urlImage = URL.createObjectURL(file);
-
-    setPrevieImg(urlImage);
+  const handleUploadProfile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file: File | undefined = event.target.files?.[0];
+    
+    if (file) {
+      const reader: FileReader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setPreviewImg(reader.result);
+      }
+    }
   }
 
   return (
@@ -36,12 +41,12 @@ function JoinForm() {
         label="프로필"
         type="file"
         style={{display: 'none'}}
-        onChange={handleUploadProfile}
         {...rest}
-        ref={(e:  HTMLInputElement) => {
+        ref={(e) => {
           profileRegisterRef(e);
           hiddenInputRef.current = e;
         }}
+        onChange={handleUploadProfile}
         />
         <img src={previewImg} alt="프로필 이미지" />
         <button type="button" onClick={handleUploadButton}>업로드</button>
