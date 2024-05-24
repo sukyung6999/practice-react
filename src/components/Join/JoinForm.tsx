@@ -12,7 +12,7 @@ function JoinForm() {
 
   const onSubmit: SubmitHandler<JoinInputs> = () => {};
 
-  const [previewImg, setPreviewImg] = useState      ('');
+  const [previewImg, setPreviewImg] = useState('');
   const [fileImg, setFileImg] = useState<File | null>(null);
   const hiddenInputRef = useRef<HTMLInputElement | null>(null);
   const {ref: profileRegisterRef, ...rest} = register('profile');
@@ -26,10 +26,10 @@ function JoinForm() {
     
     if (file) {
       const reader: FileReader = new FileReader();
-      reader.readAsDataURL(file);
       reader.onload = () => {
-        setPreviewImg(reader.result);
+        setPreviewImg(reader.result as string);
       }
+      reader.readAsDataURL(file);
     }
   }
 
