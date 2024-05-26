@@ -21,7 +21,7 @@ function JoinForm() {
     hiddenInputRef.current?.click();
   }
 
-  const uploadPrevieProfile = (file: File) => {
+  const uploadPreviewProfile = (file: File) => {
     setPreviewImg(URL.createObjectURL(file));
   }
 
@@ -29,13 +29,26 @@ function JoinForm() {
     const file: File | undefined = event.target.files?.[0];
     
     if (file) {      
-      uploadPrevieProfile(file);
+      uploadPreviewProfile(file);
+    }
+  }
+
+  const handleDragoverProfile = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const file: File | undefined = event.dataTransfer.files?.[0];
+    
+    if (file) {
+      uploadPreviewProfile(file)
     }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
+      <div 
+        onDrop={handleDragoverProfile}
+        onDragOver={(event) => {
+          event.preventDefault();
+        }}>
         <Input
         id="profile"
         label="프로필"
