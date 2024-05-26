@@ -12,7 +12,7 @@ function JoinForm() {
 
   const onSubmit: SubmitHandler<JoinInputs> = () => {};
 
-  const [previewImg, setPreviewImg] = useState('');
+  const [previewImg, setPreviewImg] = useState<string>('');
   const [fileImg, setFileImg] = useState<File | null>(null);
   const hiddenInputRef = useRef<HTMLInputElement | null>(null);
   const {ref: profileRegisterRef, ...rest} = register('profile');
@@ -21,15 +21,15 @@ function JoinForm() {
     hiddenInputRef.current?.click();
   }
 
+  const uploadPrevieProfile = (file: File) => {
+    setPreviewImg(URL.createObjectURL(file));
+  }
+
   const handleUploadProfile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file: File | undefined = event.target.files?.[0];
     
-    if (file) {
-      const reader: FileReader = new FileReader();
-      reader.onload = () => {
-        setPreviewImg(reader.result as string);
-      }
-      reader.readAsDataURL(file);
+    if (file) {      
+      uploadPrevieProfile(file);
     }
   }
 
@@ -47,6 +47,7 @@ function JoinForm() {
           hiddenInputRef.current = e;
         }}
         onChange={handleUploadProfile}
+        
         />
         <img src={previewImg} alt="프로필 이미지" />
         <button type="button" onClick={handleUploadButton}>업로드</button>
