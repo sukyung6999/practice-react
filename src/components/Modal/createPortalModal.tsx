@@ -7,7 +7,7 @@ type props = {
   children: React.ReactNode;
 };
 
-function Modal({ id, title, children }: props) {
+function CreatePortalModal({ id, title, children }: props) {
   return (
     <>
       {createPortal(
@@ -28,4 +28,4 @@ function Modal({ id, title, children }: props) {
     </>
   );
 }
-export default Modal;
+export default CreatePortalModal;
