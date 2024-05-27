@@ -53,6 +53,7 @@ function JoinForm() {
         id="profile"
         label="프로필"
         type="file"
+        accept="image/*" 
         style={{display: 'none'}}
         {...rest}
         ref={(e) => {
@@ -60,7 +61,6 @@ function JoinForm() {
           hiddenInputRef.current = e;
         }}
         onChange={handleUploadProfile}
-        
         />
         <img src={previewImg} alt="프로필 이미지" />
         <button type="button" onClick={handleUploadButton}>업로드</button>
